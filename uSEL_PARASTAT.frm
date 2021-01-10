@@ -2,47 +2,30 @@ VERSION 5.00
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Begin VB.Form Form1 
    Caption         =   "Form1"
-   ClientHeight    =   5590
-   ClientLeft      =   52
-   ClientTop       =   377
-   ClientWidth     =   9074
+   ClientHeight    =   10272
+   ClientLeft      =   48
+   ClientTop       =   372
+   ClientWidth     =   13812
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5590
-   ScaleWidth      =   9074
+   ScaleHeight     =   10272
+   ScaleWidth      =   13812
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton cmdPELATES 
-      Caption         =   "PELATES"
+   Begin VB.CommandButton cmdCommand2 
+      Caption         =   "Command2"
       Height          =   360
-      Left            =   819
-      TabIndex        =   2
-      Top             =   1521
+      Left            =   11520
+      TabIndex        =   4
+      Top             =   8520
+      Visible         =   0   'False
       Width           =   990
    End
-   Begin VB.TextBox txtWITHSUMS 
-      Height          =   5278
-      Left            =   4797
-      MultiLine       =   -1  'True
-      TabIndex        =   1
-      Text            =   "uSEL_PARASTAT.frx":0000
-      Top             =   0
-      Width           =   4342
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "¡—◊≈…¡ √…¡ ÷œ—«‘¡"
-      Height          =   598
-      Left            =   585
-      TabIndex        =   0
-      Top             =   351
-      Width           =   1651
-   End
    Begin MSAdodcLib.Adodc Adodc1 
-      Height          =   299
-      Left            =   702
-      Top             =   4095
-      Visible         =   0   'False
-      Width           =   2470
-      _ExtentX        =   4361
-      _ExtentY        =   527
+      Height          =   372
+      Left            =   6120
+      Top             =   2640
+      Width           =   2892
+      _ExtentX        =   5101
+      _ExtentY        =   656
       ConnectMode     =   0
       CursorLocation  =   3
       IsolationLevel  =   -1
@@ -73,7 +56,7 @@ Begin VB.Form Form1
       Caption         =   "Adodc1"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
-         Size            =   7.47
+         Size            =   7.8
          Charset         =   161
          Weight          =   400
          Underline       =   0   'False
@@ -81,6 +64,40 @@ Begin VB.Form Form1
          Strikethrough   =   0   'False
       EndProperty
       _Version        =   393216
+   End
+   Begin VB.CommandButton EKFORTOSI 
+      Caption         =   "≈ ÷œ—‘Ÿ”« "
+      Height          =   720
+      Left            =   7920
+      TabIndex        =   3
+      Top             =   840
+      Width           =   3372
+   End
+   Begin VB.CommandButton cmdPELATES 
+      Caption         =   "–≈À¡‘≈”"
+      Height          =   360
+      Left            =   600
+      TabIndex        =   2
+      Top             =   2280
+      Width           =   1692
+   End
+   Begin VB.TextBox txtWITHSUMS 
+      Height          =   5278
+      Left            =   360
+      MultiLine       =   -1  'True
+      TabIndex        =   1
+      Text            =   "uSEL_PARASTAT.frx":0000
+      Top             =   4080
+      Visible         =   0   'False
+      Width           =   12012
+   End
+   Begin VB.CommandButton Command1 
+      Caption         =   "≈…ƒ« √…¡ ÷œ—«‘¡"
+      Height          =   598
+      Left            =   585
+      TabIndex        =   0
+      Top             =   351
+      Width           =   1651
    End
 End
 Attribute VB_Name = "Form1"
@@ -97,7 +114,7 @@ Public Function CNull(C) As String
 
         '¡Õ ≈…Õ¡… NULL ≈–…”‘—≈÷≈… " "
         '<EhHeader>
-        On Error GoTo CNull_Err
+       ' On Error GoTo CNull_Err
 
         '</EhHeader>
         On Error Resume Next
@@ -118,6 +135,7 @@ End Function
 
 
 
+
 Private Sub cmdPELATES_Click()
 
 Dim R As New ADODB.Recordset
@@ -126,7 +144,7 @@ sql = txtWITHSUMS.Text
 
 R.Open sql, gdb, adOpenDynamic, adLockOptimistic
 
-Open "C:\CL\DATA\CUST.TXT" For Output As #1
+Open "C:\CL\DATA\CUST" For Output As #1
 Dim s As String
 
 Dim fpa As String
@@ -135,28 +153,28 @@ Do While Not R.EOF
    s = ""
    s = s + Left(R!HECODE + Space(15), 15) + " "
    s = s + Left(to437(R!HEName) + Space(35), 31) + " "
-   s = s + Left(to437(R!PRFSNAME) + Space(35), 22) + " "
+   s = s + Left(to437(R!EPAGG) + Space(35), 22) + " "
    
-   s = s + Left(to437(R!ADDRESS) + Space(30), 22) + " "
-    s = s + Left(to437(R!ADDRESS) + Space(30), 22) + " "
+   s = s + Left(to437(R!DIE) + Space(30), 22) + " "
+    s = s + Left(to437(R!DIE) + Space(30), 22) + " "
     
-    s = s + Left(to437(R!HECITY) + Space(30), 22) + " "
+    s = s + Left(to437(R!POL) + Space(30), 22) + " "
     
     
    
-    s = s + Left(to437(R!HETIN) + Space(13), 11) + " "  'AFM
+    s = s + Left(to437(R!AFM) + Space(13), 11) + " "  'AFM
     
-     s = s + Left(to437(R!TFFCNAME) + Space(30), 22) + " " 'DOY
+     s = s + Left(to437(R!DOY) + Space(30), 22) + " " 'DOY
     
-    s = s + Right(Space(35) + Format(R!YPOL, "####0.00"), 13) + " "
+    s = s + Right(Space(35) + Format(R!DD, "####0.00"), 13) + " "
     
     s = s + Left("00.00", 5) + " "  ' EKPT
     
       s = s + Left("0000002000.00", 13) + " "  ' PLAFON
     
-     s = s + Left(to437(R!TRBRPHONE1) + Space(25), 22) + " " 'THL
+     s = s + Left(to437(R!THL1) + Space(25), 22) + " " 'THL
      
-     s = s + Left(to437(R!TRBRPHONE2) + Space(30), 22) + " " 'THL2
+     s = s + Left(to437(R!THL2) + Space(30), 22) + " " 'THL2
      
      
      
@@ -180,7 +198,7 @@ Loop
 Close #1
 
 
-
+MsgBox " –≈À¡‘≈” œ "
 
 
 
@@ -227,7 +245,7 @@ sql = sql + " inner join [HEVATCLASSES] v  on (I.[HEVTCLID] = v.[HEID])"
 
 R.Open sql, gdb, adOpenDynamic, adLockOptimistic
 
-Open "C:\CL\DATA\PROD.TXT" For Output As #1
+Open "C:\CL\DATA\PROD" For Output As #1
 Dim s As String
 
 Dim fpa As String
@@ -279,10 +297,263 @@ Loop
 
 Close #1
 
+MsgBox "≈…ƒ« œ "
 
 
 End Sub
   
+Private Sub EKFORTOSI_Click()
+ 
+ FILL_Last_ComeBack_Papers
+ 
+Dim R As New ADODB.Recordset
+Dim sql As String
+Dim GDB2 As New ADODB.Connection
+GDB2.Open "DSN=IMPORTS;"
+
+GDB2.Execute "delete from [Last_ComeBack_PaperProducts] "
+
+GDB2.Execute "delete from [Last_ComeBack_Papers] "
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Dim cnn As ADODB.Connection
+    Dim rst As ADODB.Recordset
+    Dim strConnection As String
+
+    Dim strProvider As String
+    Dim strSource As String
+
+    strProvider = "Provider=Microsoft.Jet.OLEDB.4.0;"
+    strSource = "Data Source=\ADOPROG2\GIORAN\DB.mdb;"  '& App.Path &
+
+    Set cnn = New ADODB.Connection
+    strConnection = strProvider & strSource & "Persist Security Info=False"
+    cnn.Open strConnection
+    Set rst = New ADODB.Recordset
+
+    With rst
+        .ActiveConnection = cnn
+        .CursorLocation = adUseClient
+        .CursorType = adOpenKeyset
+        .LockType = adLockOptimistic
+        .Open "[Last_ComeBack_PaperProducts]"
+    End With
+
+    'Clear combo box
+   Dim K As Integer
+   
+Dim MMID As Long
+
+
+    Dim MFN As String
+    'Load combo box
+    Do While Not rst.EOF
+     ' cboData.AddItem rst!fldData
+     ' cboData.ItemData(cboData.NewIndex) = rst!fldID
+       
+      GDB2.Execute "INSERT INTO [Last_ComeBack_PaperProducts] (PaperCode) VALUES (" + Str(rst(0)) + ") "
+      
+      
+     R.Open "SELECT MAX(ID) FROM Last_ComeBack_PaperProducts", GDB2, adOpenDynamic, adLockOptimistic
+ 
+     MMID = R(0)
+     R.Close
+     
+      ' GDB2.Execute "UPDATE Last_ComeBack_PaperProducts SET PaperCode=" + rst(0) + "' WHERE ID=" + Str(MMID)
+          
+ 
+       
+     
+       For K = 1 To rst.Fields.Count - 1
+          MFN = rst.Fields(K).Name
+          GDB2.Execute "UPDATE Last_ComeBack_PaperProducts SET " + MFN + "='" + rst(K) + "' WHERE ID=" + Str(MMID)
+          
+       
+       Next
+     
+     
+     
+     
+      rst.MoveNext  '
+   Loop
+
+   ' Set initial display to first item in ListIndex
+  ' cboData.ListIndex = 0
+
+
+
+
+
+
+'
+' Do While Not REGGTIM.EOF
+'
+'            If printCrystal < 0 Then Exit Do
+'
+'320         R.AddNew
+'
+'            'On Error GoTo printCrystal_Err
+'
+'330         For k = 0 To REGGTIM.Fields.Count - 1
+'
+'                On Error GoTo LATOS
+'
+'340             If REGGTIM(k).Type = 202 Or REGGTIM(k).Type = 200 Or REGGTIM(k).Type = 129 Then    ' STRING
+'                    'R(REGGTIM(k).Name) = Left(REGGTIM(k), R(REGGTIM(k).Name).Size)
+'350                 R(k) = Left(REGGTIM(k), R(k).Size)
+'                Else
+'360                 R(k) = REGGTIM(k)
+'                    'R(REGGTIM(k).Name) = REGGTIM(k)
+'                End If
+'
+'            Next
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+'
+
+
+MsgBox "≈‘œ…Ã« « Ã≈‘¡÷œ—¡ ‘ŸÕ  …Õ«”≈ŸÕ." + Chr(13) + "–—œ◊Ÿ—≈…”‘≈ ”‘«Õ Ã≈‘¡÷œ—¡ ‘œ’ PYLON"
+
+
+
+End Sub
+
+
+
+Private Sub cmdCommand2_Click()
+
+
+   FILL_Last_ComeBack_Papers
+End Sub
+
+
+Sub FILL_Last_ComeBack_Papers()
+'========================================================================
+
+Dim R As New ADODB.Recordset
+Dim sql As String
+Dim GDB2 As New ADODB.Connection
+GDB2.Open "DSN=IMPORTS;"
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Dim cnn As ADODB.Connection
+    Dim rst As ADODB.Recordset
+    Dim strConnection As String
+
+    Dim strProvider As String
+    Dim strSource As String
+
+    strProvider = "Provider=Microsoft.Jet.OLEDB.4.0;"
+    strSource = "Data Source=\ADOPROG2\GIORAN\DB.mdb;"  '& App.Path &
+
+    Set cnn = New ADODB.Connection
+    strConnection = strProvider & strSource & "Persist Security Info=False"
+    cnn.Open strConnection
+    Set rst = New ADODB.Recordset
+
+    With rst
+        .ActiveConnection = cnn
+        .CursorLocation = adUseClient
+        .CursorType = adOpenKeyset
+        .LockType = adLockOptimistic
+        .Open "[Last_ComeBack_Papers]"
+    End With
+
+    'Clear combo box
+   Dim K As Integer
+   
+Dim MMID As Long
+
+
+    Dim MFN As String
+    'Load combo box
+    Do While Not rst.EOF
+     ' cboData.AddItem rst!fldData
+     ' cboData.ItemData(cboData.NewIndex) = rst!fldID
+       
+      GDB2.Execute "INSERT INTO [Last_ComeBack_Papers] (PaperCode,printed,canceled) VALUES (" + Str(rst(0)) + ",0,0 ) "
+      
+      
+     R.Open "SELECT MAX(ID) FROM Last_ComeBack_Papers", GDB2, adOpenDynamic, adLockOptimistic
+ 
+     MMID = R(0)
+     R.Close
+     
+      ' GDB2.Execute "UPDATE Last_ComeBack_PaperProducts SET PaperCode=" + rst(0) + "' WHERE ID=" + Str(MMID)
+          
+ 
+       
+     
+       For K = 1 To rst.Fields.Count - 1
+        If K = 9 Or K = 19 Then ' BIT
+        Else
+          MFN = rst.Fields(K).Name
+          GDB2.Execute "UPDATE Last_ComeBack_Papers SET " + MFN + "='" + rst(K) + "' WHERE ID=" + Str(MMID)
+        End If
+        
+       
+       Next
+     
+     
+     
+     
+      rst.MoveNext  '
+   Loop
+
+ 
+
+
+
+
+
+
+
+
+
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Private Sub Form_Load()
    gdb.Open "DSN=PYLON"
    
@@ -302,7 +573,7 @@ Function to437(CC) As String
 
     Dim b, C, s As String
 
-    Dim k As Integer
+    Dim K As Integer
 
     'metatrepei eggrafo apo 437->928
     s928 = "¡¬√ƒ≈∆«»… ÀÃÕŒœ–—”‘’÷◊ÿŸ-·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÛÙıˆ˜¯˘-Ú‹›ﬁﬂ¸˝˛"
@@ -314,12 +585,12 @@ Function to437(CC) As String
     'Open Text1.Text For Input As #1
     'Do While Not EOF(1)
     'Line Input #1, a
-    For k = 1 To Len(A)
-        s = Mid(A, k, 1)
+    For K = 1 To Len(A)
+        s = Mid(A, K, 1)
         t = InStr(s928, s)
 
         If t > 0 Then
-            Mid$(A, k, 1) = Mid$(s437, t, 1)
+            Mid$(A, K, 1) = Mid$(s437, t, 1)
         End If
 
     Next
