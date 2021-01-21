@@ -23,6 +23,7 @@ Begin VB.Form Form1
       Height          =   372
       Left            =   6120
       Top             =   2640
+      Visible         =   0   'False
       Width           =   2892
       _ExtentX        =   5101
       _ExtentY        =   656
@@ -66,20 +67,24 @@ Begin VB.Form Form1
       _Version        =   393216
    End
    Begin VB.CommandButton EKFORTOSI 
+      BackColor       =   &H0080FF80&
       Caption         =   "ейжоятысг "
       Height          =   720
       Left            =   7920
+      Style           =   1  'Graphical
       TabIndex        =   3
-      Top             =   840
+      Top             =   360
       Width           =   3372
    End
    Begin VB.CommandButton cmdPELATES 
+      BackColor       =   &H00FFFF80&
       Caption         =   "пекатес"
-      Height          =   360
+      Height          =   598
       Left            =   600
+      Style           =   1  'Graphical
       TabIndex        =   2
-      Top             =   2280
-      Width           =   1692
+      Top             =   1200
+      Width           =   1651
    End
    Begin VB.TextBox txtWITHSUMS 
       Height          =   5278
@@ -92,9 +97,11 @@ Begin VB.Form Form1
       Width           =   12012
    End
    Begin VB.CommandButton Command1 
+      BackColor       =   &H00FFFF80&
       Caption         =   "еидг циа жоягта"
       Height          =   598
       Left            =   585
+      Style           =   1  'Graphical
       TabIndex        =   0
       Top             =   351
       Width           =   1651
@@ -304,7 +311,7 @@ End Sub
   
 Private Sub EKFORTOSI_Click()
  
- FILL_Last_ComeBack_Papers
+ 
  
 Dim R As New ADODB.Recordset
 Dim sql As String
@@ -317,7 +324,7 @@ GDB2.Execute "delete from [Last_ComeBack_Papers] "
  
  
  
- 
+ FILL_Last_ComeBack_Papers
  
  
  
@@ -330,7 +337,8 @@ GDB2.Execute "delete from [Last_ComeBack_Papers] "
     Dim strSource As String
 
     strProvider = "Provider=Microsoft.Jet.OLEDB.4.0;"
-    strSource = "Data Source=\ADOPROG2\GIORAN\DB.mdb;"  '& App.Path &
+   ' strSource = "Data Source=\ADOPROG2\GIORAN\DB.mdb;"  '& App.Path &
+    strSource = "Data Source=\SFV\DB\DB.mdb;"  '& App.Path &
 
     Set cnn = New ADODB.Connection
     strConnection = strProvider & strSource & "Persist Security Info=False"
@@ -472,8 +480,8 @@ GDB2.Open "DSN=IMPORTS;"
     Dim strSource As String
 
     strProvider = "Provider=Microsoft.Jet.OLEDB.4.0;"
-    strSource = "Data Source=\ADOPROG2\GIORAN\DB.mdb;"  '& App.Path &
-
+    strSource = "Data Source=\SFV\DB\DB.mdb;" '& App.Path &
+   '"Data Source=\SFV\DB\DB.mdb;"
     Set cnn = New ADODB.Connection
     strConnection = strProvider & strSource & "Persist Security Info=False"
     cnn.Open strConnection
