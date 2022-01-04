@@ -1,14 +1,14 @@
 VERSION 5.00
-Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
+Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSAdoDc.ocx"
 Begin VB.Form Form1 
    Caption         =   "Form1"
-   ClientHeight    =   10272
-   ClientLeft      =   48
-   ClientTop       =   372
-   ClientWidth     =   13812
+   ClientHeight    =   10275
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   13815
    LinkTopic       =   "Form1"
-   ScaleHeight     =   10272
-   ScaleWidth      =   13812
+   ScaleHeight     =   10275
+   ScaleWidth      =   13815
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdCommand2 
       Caption         =   "Command2"
@@ -25,8 +25,8 @@ Begin VB.Form Form1
       Top             =   2640
       Visible         =   0   'False
       Width           =   2892
-      _ExtentX        =   5101
-      _ExtentY        =   656
+      _ExtentX        =   5106
+      _ExtentY        =   661
       ConnectMode     =   0
       CursorLocation  =   3
       IsolationLevel  =   -1
@@ -57,7 +57,7 @@ Begin VB.Form Form1
       Caption         =   "Adodc1"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   161
          Weight          =   400
          Underline       =   0   'False
@@ -112,8 +112,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+Dim IS_MERC As Integer  ' 1= PYLON TO MERCURY    0=PYLON TO GIORANIDIS
 Dim gdb As New ADODB.Connection
+
+Dim GMERC As New ADODB.Connection
+
+
 
 
 
@@ -148,19 +152,53 @@ Private Sub cmdPELATES_Click()
 Dim R As New ADODB.Recordset
 Dim sql As String
 sql = txtWITHSUMS.Text
-
+sql = Replace$(sql, "2021", Format(Year(Now), "0000"))
 R.Open sql, gdb, adOpenDynamic, adLockOptimistic
 
 Open "C:\CL\DATA\CUST" For Output As #1
 Dim s As String
 
 Dim fpa As String
-
+ If IS_MERC = 1 Then
+      Dim R2 As New ADODB.Recordset
+ End If
+ 
+      
 Do While Not R.EOF
    s = ""
    s = s + Left(R!HECODE + Space(15), 15) + " "
-   s = s + Left(to437(R!HEName) + Space(35), 31) + " "
+   s = s + Left(to437(R!HENAME) + Space(35), 31) + " "
    s = s + Left(to437(R!EPAGG) + Space(35), 22) + " "
+   
+   R2.Open "SELECT COUNT(*) FROM PEL   WHERE  EIDOS='e' and KOD='" + R!HECODE + "'", GMERC, adOpenDynamic, adLockOptimistic
+   If R2(0) = 0 Then
+          GMERC.Execute "INSERT INTO PEL (EIDOS,KOD) VALUES ('e','" + R!HECODE + "')"
+   End If
+   R2.Close
+   
+  
+  If IS_MERC = 1 Then
+   GMERC.Execute "update PEL set EPO='" + Left(R!HENAME, 35) + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   
+    GMERC.Execute "update PEL set EPA='" + R!EPAGG + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   
+   GMERC.Execute "update PEL set DIE='" + Left(R!DIE, 35) + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   
+   GMERC.Execute "update PEL set POL='" + R!POL + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   
+   GMERC.Execute "update PEL set AFM='" + R!AFM + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   GMERC.Execute "update PEL set DOY='" + Replace(R!DOY, "'", "`") + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   GMERC.Execute "update PEL set AYP=" + Replace(Format(R!DD, "####0.00"), ",", ".") + "  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   
+   GMERC.Execute "update PEL set THL='" + Left(R!THL1, 10) + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   
+   GMERC.Execute "update PEL set PEK=" + Replace(Format(R!EKPTOSIS, "####0.00"), ",", ".") + "  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+ End If
+   
+   ' Left(to437(R!THL1)
+   
+   
+   
    
    s = s + Left(to437(R!DIE) + Space(30), 22) + " "
     s = s + Left(to437(R!DIE) + Space(30), 22) + " "
@@ -249,8 +287,12 @@ sql = sql + " FROM dbo.HEITEMS i WITH (NOLOCK) "
 sql = sql + " LEFT OUTER JOIN HEMEASUREMENTUNITS u WITH (NOLOCK) ON i.HEAMSNTID = u.HEID"
 sql = sql + " inner join [HEVATCLASSES] v  on (I.[HEVTCLID] = v.[HEID])"
 
+If IS_MERC = 1 Then
+   R.Open sql, gdb, adOpenDynamic, adLockOptimistic
+End If
 
-R.Open sql, gdb, adOpenDynamic, adLockOptimistic
+Dim R2 As New ADODB.Recordset
+
 
 Open "C:\CL\DATA\PROD" For Output As #1
 Dim s As String
@@ -270,11 +312,44 @@ Do While Not R.EOF
  s = s + Right(Space(35) + Format(R!PRICE, "####0.00"), 13) + " "
  
  
+ 
+ 
+ If IS_MERC = 1 Then
+ 
+ R2.Open "SELECT COUNT(*) FROM EID   WHERE   KOD='" + R!KOD + "'", GMERC, adOpenDynamic, adLockOptimistic
+   If R2(0) = 0 Then
+          GMERC.Execute "INSERT INTO EID (KOD) VALUES ('" + R!KOD + "')"
+   End If
+   R2.Close
+   
+
+
+
+
+   GMERC.Execute "update EID set ONO='" + R!Name + "'  WHERE   KOD='" + R!KOD + "'"
+   
+   GMERC.Execute "update EID set MON='" + R!MON + "'  WHERE   KOD='" + R!KOD + "'"
+   GMERC.Execute "update EID set LTI=" + Replace(Format(R!PRICE, "####0.00"), ",", ".") + "  WHERE   KOD='" + R!KOD + "'"
+   
+End If
+
+ 
+ 
+ 
+ 
+ 
+ 
      fpa = "    7"
      If Val(Mid(R!vat, 2, 6)) = 1 Then
         fpa = "    7" ' 24%
+        If IS_MERC = 1 Then
+            GMERC.Execute "update EID set FPA=2  WHERE   KOD='" + R!KOD + "'"
+        End If
      ElseIf Val(Mid(R!vat, 2, 6)) = 2 Then
         fpa = "    9" '13%
+        If IS_MERC = 1 Then
+            GMERC.Execute "update EID set FPA=1  WHERE   KOD='" + R!KOD + "'"
+        End If
       ElseIf Val(Mid(R!vat, 2, 6)) = 3 Then
         fpa = "    6"
       ElseIf Val(Mid(R!vat, 2, 6)) = 2 Then
@@ -563,8 +638,28 @@ End Sub
 
 
 Private Sub Form_Load()
-   gdb.Open "DSN=PYLON"
-   
+  
+  
+  
+  IS_MERC = 0
+  
+  If Len(Dir("C:\MERCVB", vbDirectory)) > 0 Then
+      IS_MERC = 1
+  End If
+  
+  Me.Caption = IS_MERC
+  If IS_MERC = 1 Then
+     gdb.Open "DSN=PYLON2;uid=sa;pwd=p@ssw0rd"
+     
+     GMERC.Open "DSN=MERCSQL"
+  Else
+     gdb.Open "DSN=PYLON;uid=sa;pwd=p@ssw0rd"
+  
+  End If
+  
+  
+  
+
 
 
 End Sub
