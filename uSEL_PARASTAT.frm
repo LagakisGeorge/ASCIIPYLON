@@ -161,6 +161,7 @@ Dim s As String
 Dim fpa As String
  If IS_MERC = 1 Then
       Dim R2 As New ADODB.Recordset
+      GMERC.Execute "UPDATE PEL SET AYP=0"
  End If
  
       
@@ -190,7 +191,7 @@ Do While Not R.EOF
    
    GMERC.Execute "update PEL set AFM='" + R!AFM + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
    GMERC.Execute "update PEL set DOY='" + Replace(R!DOY, "'", "`") + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
-   GMERC.Execute "update PEL set AYP=" + Replace(Format(R!DD, "####0.00"), ",", ".") + "  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
+   GMERC.Execute "update PEL set AYP=AYP+" + Replace(Format(R!DD, "####0.00"), ",", ".") + "  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
    
    GMERC.Execute "update PEL set THL='" + Left(R!THL1, 10) + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
    
@@ -651,9 +652,9 @@ Private Sub Form_Load()
   
   Me.Caption = IS_MERC
   
-   IS_MERC = 0
+   
   If IS_MERC = 1 Then
-     gdb.Open "DSN=PYLON2;uid=sa;pwd=p@ssw0rd"
+     gdb.Open "DSN=PYLON;uid=sa;pwd=p@ssw0rd"
      
      GMERC.Open "DSN=MERCSQL"
   Else
