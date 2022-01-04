@@ -170,14 +170,16 @@ Do While Not R.EOF
    s = s + Left(to437(R!HENAME) + Space(35), 31) + " "
    s = s + Left(to437(R!EPAGG) + Space(35), 22) + " "
    
-   R2.Open "SELECT COUNT(*) FROM PEL   WHERE  EIDOS='e' and KOD='" + R!HECODE + "'", GMERC, adOpenDynamic, adLockOptimistic
-   If R2(0) = 0 Then
+   
+   If IS_MERC = 1 Then
+      R2.Open "SELECT COUNT(*) FROM PEL   WHERE  EIDOS='e' and KOD='" + R!HECODE + "'", GMERC, adOpenDynamic, adLockOptimistic
+      If R2(0) = 0 Then
           GMERC.Execute "INSERT INTO PEL (EIDOS,KOD) VALUES ('e','" + R!HECODE + "')"
-   End If
-   R2.Close
+      End If
+      R2.Close
    
   
-  If IS_MERC = 1 Then
+ 
    GMERC.Execute "update PEL set EPO='" + Left(R!HENAME, 35) + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
    
     GMERC.Execute "update PEL set EPA='" + R!EPAGG + "'  WHERE  EIDOS='e' and KOD='" + R!HECODE + "'"
@@ -287,12 +289,12 @@ sql = sql + " FROM dbo.HEITEMS i WITH (NOLOCK) "
 sql = sql + " LEFT OUTER JOIN HEMEASUREMENTUNITS u WITH (NOLOCK) ON i.HEAMSNTID = u.HEID"
 sql = sql + " inner join [HEVATCLASSES] v  on (I.[HEVTCLID] = v.[HEID])"
 
-If IS_MERC = 1 Then
+
    R.Open sql, gdb, adOpenDynamic, adLockOptimistic
+
+If IS_MERC = 1 Then
+     Dim R2 As New ADODB.Recordset
 End If
-
-Dim R2 As New ADODB.Recordset
-
 
 Open "C:\CL\DATA\PROD" For Output As #1
 Dim s As String
@@ -648,6 +650,8 @@ Private Sub Form_Load()
   End If
   
   Me.Caption = IS_MERC
+  
+   IS_MERC = 0
   If IS_MERC = 1 Then
      gdb.Open "DSN=PYLON2;uid=sa;pwd=p@ssw0rd"
      
